@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+
+   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+
+  {{>header}}
+</head>
+<body>
+  <div class="row justify-content-center">
+    <div class="col-md-8" style="background-color: darkcyan; width:500px;">
+      <center>
+      <form action="registration" class="div" method="POST" enctype="multipart/form-data">
+        <h3>sign up form </h3>
+        <hr>
+        <div class="mb-3">
+          <label for="exampleInputEmail1" class="form-label">name</label>
+          <input type="text" class="form-control" id="name" aria-describedby="emailHelp" name="name" required>
+        </div>
+        <div class="mb-3">
+          <label for="exampleInputEmail1" class="form-label">Email address</label>
+          <input type="email" class="form-control" id="email" aria-describedby="emailHelp" name="email"
+            required>
+        </div>
+        <div class="mb-3">
+          <label for="exampleInputPassword1" class="form-label">Password</label>
+          <input type="password" class="form-control" id="password" name="password" required>
+        </div>
+        <div class="mb-3">
+          <label for="exampleInputPassword1" class="form-label">Date of Birth </label>
+          <input type="date" class="form-control" id="dob" name="dob" required>
+        </div>
+        <div class="mb-3">
+          <label for="exampleInputmobile" class="form-label">mobile</label>
+          <input type="text" class="form-control" id="mobile" aria-describedby="mobile" name="mobile" maxlength="10" required>
+        </div>
+        <div class="mb-3">
+          <label for="exampleInputmobile" class="form-label">profile-img</label>
+          <input type="file" class="form-control"  aria-describedby="mobile" name="image"  required>
+        </div>
+        
+        <select class="form-select form-select-lg mb-3" name="userType" id="userType" aria-label=".form-select-lg example">
+  <option please select></option>
+  <option value="admin">adminuser</option>
+   <option value="user">normaluser</option>
+</select>
+        <button type="submit" class="btn btn-primary">Submit</button>
+        <button class="button" style="float: right;">
+          <a href="/">
+            cancel</a>
+        </button>
+      </form>
+      </center>
+    </div>
+  </div>
+</body>
+</html>

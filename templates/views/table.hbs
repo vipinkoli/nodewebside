@@ -1,0 +1,163 @@
+<DOCTYPE HTML>
+    <html>
+
+    <head>
+        <style>
+            table,
+            th,
+            td {
+                border: 1px solid black;
+            }
+        </style>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+        {{>navbar}}
+    </head>
+
+    <body bgcolor="lightblue">
+
+        <table cellspacing="-1" cellpadding="15">
+
+            <thead>
+                <tr>
+                    <th> s.no </th>
+                    <th> Profile-img </th>
+                    <th> Name </th>
+                    <th> Email</th>
+                    <th> Password </th>
+                    <th> Mobile </th>
+                    <th> Date of Birth</th>
+                    <th> Action </th>
+
+                </tr>
+            </thead>
+            <tbody id="tbody">
+
+            </tbody>
+        </table>
+
+    </body>
+
+
+    </html>
+    <script>
+
+        var x = sessionStorage.getItem("userType");
+        x = JSON.parse(x);
+        $(document).ready(function () {
+            $.ajax({
+                url: 'http://localhost:4000/getData',
+                type: 'POST',
+                success: function (response) {
+                    if (response.success) {
+                        //console.log("success")
+                        let data = response.data;
+                      //  console.log(data, "4545454545454")
+                        let html = "";
+                        for (let r = 0; r < data.length; r++) {
+                            html += '<tr>';
+                            html += '<td>' + (r + 1) + '</td>';
+                            html += `<td> <img src= ./uploads/${data[r].image} alt ="user-image" width= "80" ></td>`;
+                            html += '<td>' + data[r].name + '</td>';
+                            html += '<td>' + data[r].email + '</td>';
+                            html += '<td>' + data[r].password + '</td>';
+                            html += '<td>' + data[r].mobile + '</td>';
+                            html += '<td>' + data[r].dob + '</td>';
+
+
+                            if (x == "admin") {
+                                html += '<td><input type="button" class="edit" name="edit" value="Edit" data-id="' + data[r]._id + '"><input type="button" class="button" name="delete" value="Delete" data-id="' + data[r]._id + '"></td>';
+                                if (data[r].block == false) {
+                                    html += '<td><input type="button" class="block" name="block" value="Block" data-id="' + data[r]._id + '"></td>';
+                                } else {
+                                    html += '<td><input type="button" class="unblock" name="unblock" value="Unblock" data-id="' + data[r]._id + '"></td>';
+                                }
+                            } else {
+                                html += '<td><input  type="button" class="edit" name="edit" value="profile" data-id="' + data[r]._id + '"></td>';
+                            }
+
+                            html += "</tr>"
+                            $('#tbody').html(html);
+                        }
+                    } else {
+                        alert("some err exted")
+                    }
+
+                }
+            });
+        })
+
+        if (x == 'admin') {
+            $('#tbody').on('click', '.edit', function () {
+                var id = $(this).data("id");
+                sessionStorage.setItem("id", id);
+                window.location.href = "/update";
+            });
+        } else {
+            $('#tbody').on('click', '.edit', function () {
+                var id = $(this).data("id");
+                sessionStorage.setItem("id", id);
+                window.location.href = "/update1";
+            });
+        }
+
+        /////////Delete Ajax///////
+        $('#tbody').on('click', '.button', function () {
+            alert("want to deleted user???")
+            var id = $(this).data("id")
+            $.ajax({
+                url: "http://localhost:4000/delete",
+                method: "POST",
+                data: { id },
+                dataType: "JSON",
+                success: function (res) {
+                    if (res.success) {
+                        sessionStorage.setItem("id", id);
+                        window.location.href = "/table";
+                        {{!-- window.location.href = "/table?userId"; --}}
+                    } else {
+                        alert("same error occed")
+                    }
+                }
+            })
+        });
+
+        ////Block user/////
+        $('#tbody').on('click', '.block', function () {
+            alert("please press button ");
+            var block_id = $(this).data("id");
+            var block = true;
+            $.ajax({
+                url: "http://localhost:4000/blockuser",
+                method: "POST",
+                data: { block_id, block },
+                dataType: "JSON",
+                success: function (res) {
+                    if (res.success) {
+                        alert("user is blocked")
+                    } else {
+                        alert("same error occed");
+                    }
+                }
+            })
+        })
+
+        /////unblock Ajax /////
+        $('#tbody').on('click', '.unblock', function () {
+            alert("please press button");
+            var unblock_id = $(this).data("id");
+            var blocked = false;
+            $.ajax({
+                url: "http://localhost:4000/unblockuser",
+                method: "POST",
+                data: { unblock_id, blocked },
+                dataType: "JSON",
+                success: function (res) {
+                    if (res.success) {
+                        alert("user are unblock")
+                    } else {
+                        alert("same error occed");
+                    }
+                }
+            })
+        })
+    </script>

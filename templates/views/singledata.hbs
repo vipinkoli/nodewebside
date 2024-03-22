@@ -1,0 +1,61 @@
+<DOCTYPE HTML>
+    <html>
+
+    <head>
+        <style>
+            table,
+            th,
+            td {
+                border: 1px solid black;
+            }
+        </style>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+        {{>navbar}}
+    </head>
+
+    <body bgcolor="lightblue">
+        <table cellspacing="-1" cellpadding="15">
+
+            <thead>
+                <tr>
+                    <th> name </th>
+                    <th> Email</th>
+                    <th> password </th>
+                    <th> mobile </th>
+                    <th> dob </th>
+                </tr>
+            </thead>
+            <tbody id="tbody">
+
+            </tbody>
+        </table>
+
+    </body>
+
+    </html>
+    <script>
+        $(document).ready(function () {
+            var email = sessionStorage.getItem("email");
+            $.ajax({
+                type: 'POST',
+                url: 'http://localhost:4000/singledata',
+                data: { email },
+                success: function (response) {
+                    //console.log(response, "99899999999")
+                    if (response.success) {
+                        let data = response.data;
+                        let html = "";
+                        html += '<tr>'
+                        html += `<td> ${data.name} </td>`
+                        html += `<td> ${data.email} </td>`
+                        html += `<td> ${data.password} </td>`
+                        html += `<td> ${data.mobile} </td>`
+                        html += `<td> ${data.dob} </td>`
+                        $('#tbody').html(html);
+                    } else {
+                        alert("some err exted")
+                    }
+                }
+            })
+        });
+    </script>

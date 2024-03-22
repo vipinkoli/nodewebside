@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+  {{>header}}
+</head>
+
+<body>
+  <div class="row justify-content-center">
+    <div class="col-md-8">
+      <form action="",>
+        <h3>sign up form </h3>
+        <hr>
+
+        <div class="mb-3">
+          <label for="exampleInputEmail1" class="form-label">name</label>
+          <input type="text" class="form-control" id="name1" aria-describedby="emailHelp" name="name" required readonly>
+        </div><br>
+        <div class="mb-3">
+          <label for="exampleInputEmail1" class="form-label">Email address</label>
+          <input type="email" class="form-control" id="email1" aria-describedby="emailHelp" name="email" required readonly>
+        </div><br>
+        <div class="mb-3">
+          <label for="exampleInputPassword1" class="form-label">Password</label>
+          <input type="password" class="form-control" id="password1" name="password" required readonly>
+        </div><br>
+        <div class="mb-3">
+          <label for="exampleInputmobile" class="form-label">mobile</label>
+          <input type="text" class="form-control" id="mobile1" aria-describedby="mobile" name="mobile" required readonly>
+        </div><br>
+        <div class="mb-3">
+          <label for="exampleInputPassword1" class="form-label">Date of Birth </label>
+          <input type="date1" class="form-control" id="dob1" name="dob" required readonly>
+        </div><br>
+
+        <button id="update">Update</button>
+         <button style="float: right;">
+          <a href="/login">
+            cancel</a>
+        </button>
+
+      </form>
+    </div>
+  </div>
+  <script>
+  $(document).ready(function () {
+     // alert("111111111111111111111")
+      var _id = sessionStorage.getItem("id");
+      $.ajax({
+        type: 'POST',
+        url: 'http://localhost:4000/updateData',
+        data: { _id },
+        success: function (response) {
+          if (response.success) {
+            var html = "";
+            var userData = response.eData;
+            $('#name1').val(userData.name);
+            $('#email1').val(userData.email);
+            $('#password1').val(userData.password);
+            $('#mobile1').val(userData.mobile);
+            $('#dob1').val(userData.dob);
+
+          } else {
+            alert("some err exted")
+          }
+        }
+      });
+    });
+
+    $("#update").on('click', function (e) {
+      e.preventDefault();
+      alert("please press button");
+      var _id = sessionStorage.getItem("id");
+      var name = $('#name1').val();
+      var email = $('#email1').val();
+      var password = $('#password1').val();
+      var mobile = $('#mobile1').val();
+      var dob = $('#dob1').val();
+      $.ajax({
+        type: 'POST',
+        url: 'http://localhost:4000/update',
+        data: { _id, name, email, password, mobile, dob },
+        success: function (res) {
+         // console.log(res, "7777777777");
+          if (res.success) {
+            window.location.replace("table");
+          } else {
+            alert("some error occurd")
+          }
+        }
+      })
+    });    
+  </script>
+  </body>
+  </html>

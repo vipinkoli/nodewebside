@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+  {{>header}}
+</head>
+
+<body>
+  <div class="row justify-content-center">
+    <div class="col-md-8 bg-success">
+
+      <form action="login">
+        <h2>Email login</h2>
+        <hr>
+        <div class="mb-3">
+          <label for="exampleInputEmail1" class="form-label">Email address</label>
+          <input type="email" class="form-control" id="email" aria-describedby="emailHelp" name="email">
+        </div><br>
+        <div class="mb-3">
+          <label for="exampleInputPassword1" class="form-label">Password</label>
+          <input type="password" class="form-control" id="password" name="password">
+        </div><br>
+
+        <button class="submitForm">
+          <a href="/forget">Forget</a>
+        </button>
+        <button type="submit" id="submitForm">Submit</button>
+
+        <button style="float: right;">
+          <a href="/registration">
+            Registration</a>
+        </button>
+
+      </form>
+    </div>
+  </div>
+
+</body>
+
+</html>
+<script>
+  // var x = sessionStorage.getItem("userType");
+
+  $("#submitForm").on('click', function (e) {
+    e.preventDefault();
+    alert("please click button");
+    var email = $("#email").val();
+    var password = $("#password").val();
+    var isLogin = true;
+    
+
+    $.ajax({
+      // cosole.log(data,"uhgdjhhghfgjjgj")
+      type: 'POST',
+      url: 'http://localhost:4000/login',
+      dataType: 'JSON',
+      data: { email, password, isLogin },
+      success: function (data) {
+        console.log(data, "data")
+        var userType = data.message.userType;
+        // console.log(userType,"66666666");
+        if (data.success) {
+          sessionStorage.setItem("email", JSON.stringify(email));
+          sessionStorage.setItem("userType", JSON.stringify(userType));
+          window.location.replace("table?userId=" + data.message._id);
+        } else {
+          alert(data.message);
+        }
+      }
+    });
+  });
+</script>
